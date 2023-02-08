@@ -167,23 +167,16 @@ function builder.new(class, datatbl)
 		end
 	end
 
-	local function setupenv(func)
-		setfenv(func, setmetatable({obj = obj, builder = builder}, {__index = getfenv(0)}))
-	end
-
 	for _, data in datatbl do
 		if data.type == builder.datatype.Property then
 			obj.properties[data.index] = data.value
 		elseif data.type == builder.datatype.IgnoredProperty then
 			obj.ignoredproperties[data.index] = true
 		elseif data.type == builder.datatype.Connection then
-			setupenv(data.callback)
 			table.insert(obj.connections, data)
 		elseif data.type == builder.datatype.PropertyConnection then
-			setupenv(data.callback)
 			table.insert(obj.propertyconnections, data)
 		elseif data.type == builder.datatype.EventListener then
-			setupenv(data.callback)
 			table.insert(eventlisteners, data)
 		elseif data.type == builder.datatype.Child then
 			table.insert(obj.children, data)
