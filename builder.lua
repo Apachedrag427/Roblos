@@ -64,7 +64,7 @@ local eventlisteners = {}
 
 local builder = {}
 
-builder.version = "test123"
+builder.version = "testa"
 
 builder.datatype = {
 	Property = newproxy(),
@@ -168,7 +168,7 @@ function builder.new(class, datatbl)
 	end
 
 	local function setupenv(func)
-		setfenv(func, setmetatable({self = obj, builder = builder}, {__index = getfenv(0)}))
+		setfenv(func, setmetatable({obj = obj, builder = builder}, {__index = getfenv(0)}))
 	end
 
 	for _, data in datatbl do
