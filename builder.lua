@@ -211,6 +211,9 @@ function builder.new(class, datatbl)
 	end
 
 	function obj.fullremove()
+		for _, c in obj.realconnections do
+			disconnect(c)
+		end
 		for _, c in obj.children do
 			c.fullremove()
 		end
@@ -247,7 +250,7 @@ function builder.new(class, datatbl)
 			connect(i[c.signalname], c.callback)
 		end
 
-		obj.propertydetection = connect(i.Changed, function(p)
+		connect(i.Changed, function(p)
 			if p == "Parent" or obj.ignoredproperties[p] then
 				return
 			end
@@ -269,7 +272,7 @@ function builder.new(class, datatbl)
 			end
 		end
 
-		obj.destroydetection = connect(i.AncestryChanged, function()
+		connect(i.AncestryChanged, function()
 			if i.Parent ~= parent then
 				task.defer(obj.create)
 			end
