@@ -261,7 +261,11 @@ function builder.new(class, datatbl)
 			connect(i[c.signalname], c.callback)
 		end
 
-		connect(i.Changed, function(p)
+		local ch; ch = connect(i.Changed, function(p)
+			if not obj.create then
+				disconnect(ch)
+				return
+			end
 			if p == "Parent" or obj.ignoredproperties[p] then
 				return
 			end
@@ -283,7 +287,11 @@ function builder.new(class, datatbl)
 			end
 		end
 
-		connect(i.AncestryChanged, function()
+		local ac; ac = connect(i.AncestryChanged, function()
+			if not obj.create then
+				disconnect(ac)
+				return
+			end
 			if i.Parent ~= parent then
 				task.defer(obj.create)
 			end
