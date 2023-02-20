@@ -203,12 +203,32 @@ function builder.new(class, datatbl)
 		end)
 	end)
 
+	function obj.destroy()
+		for _, c in obj.realconnections do
+			disconnect(c)
+		end
+		debris:AddItem(obj.currentinstance, 0)
+	end
+
+	function obj.fullremove()
+		for _, c in obj.children do
+			c.fullremove()
+		end
+		obj.destroy()
+		if obj.parent and not (type(obj.parent.obj) == "userdata" and obj.parent.obj.ClassName) then
+			local idx = find(obj.parent.obj.children, obj)
+			if idx then
+				table.remove(obj.parent.obj.children, idx)
+			end
+		end
+		for i in obj do
+			obj[i] = nil
+		end
+	end
+
 	function obj.create()
 		if obj.currentinstance and not isdestroyed(obj.currentinstance) then
-			for _, c in obj.realconnections do
-				disconnect(c)
-			end
-			debris:AddItem(obj.currentinstance, 0)
+			obj.destroy()
 		end
 
 		local i = Instance.new(class)
@@ -227,7 +247,7 @@ function builder.new(class, datatbl)
 			connect(i[c.signalname], c.callback)
 		end
 
-		connect(i.Changed, function(p)
+		obj.propertydetection = connect(i.Changed, function(p)
 			if p == "Parent" or obj.ignoredproperties[p] then
 				return
 			end
@@ -249,7 +269,7 @@ function builder.new(class, datatbl)
 			end
 		end
 
-		connect(i.AncestryChanged, function()
+		obj.destroydetection = connect(i.AncestryChanged, function()
 			if i.Parent ~= parent then
 				task.defer(obj.create)
 			end
