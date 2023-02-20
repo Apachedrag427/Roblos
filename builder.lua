@@ -2,6 +2,17 @@ local clone = script.Clone
 
 local debris = game:GetService("Debris")
 
+local oldtask = task
+
+local task = setmetatable({
+	defer = function(...)
+		print(debug.traceback("DEFER"))
+		return oldtask.defer(...)
+	end
+}, {
+	__index = task
+})
+
 local classes = {}
 local oldInstance = Instance
 
