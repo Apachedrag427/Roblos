@@ -2,17 +2,6 @@ local clone = script.Clone
 
 local debris = game:GetService("Debris")
 
-local oldtask = task
-
-local task = setmetatable({
-	defer = function(...)
-		print(debug.traceback("DEFER"))
-		return oldtask.defer(...)
-	end
-}, {
-	__index = task
-})
-
 local classes = {}
 local oldInstance = Instance
 
@@ -288,7 +277,7 @@ function builder.new(class, datatbl)
 		end
 
 		local ac; ac = connect(i.AncestryChanged, function()
-			if not obj.create then
+			if not obj.create or type(obj.create) ~= "function" then
 				disconnect(ac)
 				return
 			end
