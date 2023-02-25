@@ -66,6 +66,8 @@ local builder = {}
 
 builder.version = "testa"
 
+warn("Loaded Apache's builder api. Version: " .. builder.version)
+
 builder.datatype = {
 	Property = newproxy(),
 	IgnoredProperty = newproxy(),
@@ -259,10 +261,13 @@ function builder.new(class, datatbl)
 				return
 			end
 
-			pcall(function()
+			local s, err = pcall(function()
 				local baseprop = obj.properties[p] or classes[class][p]
 				i[p] = baseprop
 			end)
+			if not s then
+				warn("Error: ", tostring(err))
+			end
 		end)
 
 		local parent
