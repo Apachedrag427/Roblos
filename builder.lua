@@ -261,9 +261,7 @@ function builder.new(class, datatbl)
 
 			pcall(function()
 				local baseprop = obj.properties[p] or classes[class][p]
-				if i[p] ~= baseprop then
-					i[p] = baseprop
-				end
+				i[p] = baseprop
 			end)
 		end)
 
