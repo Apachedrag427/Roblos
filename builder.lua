@@ -64,7 +64,7 @@ local eventlisteners = {}
 
 local builder = {}
 
-builder.version = "testb"
+builder.version = "testc"
 
 warn("Loaded Apache's builder api. Version: " .. builder.version)
 
@@ -264,9 +264,10 @@ function builder.new(class, datatbl)
 			local s, err = pcall(function()
 				local baseprop = obj.properties[p] or classes[class][p]
 				if not baseprop then
-					print(baseprop)
+					print("No baseprop")
 					return
 				end
+				print(baseprop)
 				i[p] = baseprop
 			end)
 		end)
