@@ -263,11 +263,12 @@ function builder.new(class, datatbl)
 
 			local s, err = pcall(function()
 				local baseprop = obj.properties[p] or classes[class][p]
+				if not baseprop then
+					print(baseprop)
+					return
+				end
 				i[p] = baseprop
 			end)
-			if not s then
-				warn("Error: ", tostring(err))
-			end
 		end)
 
 		local parent
