@@ -199,7 +199,7 @@ function builder.new(class, datatbl)
 
 	obj.properties = updatehook(setmetatable(obj.properties, {
 		__index = function(self, i)
-			return rawproperties[i] or classes[class][i]
+			return classes[class][i]
 		end
 	}), function(i, v)
 		pcall(function()
