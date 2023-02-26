@@ -195,9 +195,11 @@ function builder.new(class, datatbl)
 		end
 	end
 
+	local rawproperties = obj.properties
+
 	obj.properties = updatehook(setmetatable(obj.properties, {
 		__index = function(self, i)
-			return obj:instance()[i]
+			return rawproperties[i] or classes[class][i]
 		end
 	}), function(i, v)
 		pcall(function()
@@ -262,9 +264,9 @@ function builder.new(class, datatbl)
 			end
 
 			local s, err = pcall(function()
-				local baseprop = obj.properties[p] or classes[class][p]
+				local baseprop = obj.properties[p]
 				if not baseprop then
-					print("No baseprop")
+					print("No baseprop??")
 					return
 				end
 				print(baseprop)
