@@ -64,7 +64,7 @@ local eventlisteners = {}
 
 local builder = {}
 
-builder.version = "testa"
+builder.version = "testb"
 
 warn("Loaded Apache's builder api. Version: " .. builder.version)
 
